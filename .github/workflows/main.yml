@@ -8,29 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Fail randomly
-      run: |
-        cat README.md
-        exit $((RANDOM % 2))        
-    - name: Message success
-      if: ${{ success() }}
-      uses: actions/github-script@v4
+    - name: checkout main
+      uses: actions/checkout@v2
+    - name: start server
+      uses: actions/setup-node@v1
       with:
-        script: |
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Deployment succeeded! ✅',
-          });          
-    - name: Message failure
-      if: ${{ failure() }}
-      uses: actions/github-script@v4
+        node-version: '16.x'
+      - run: npm run start & npx wait-on 172.17.0.1:3000
+    - name: js action
+      uses: ./sc-action
       with:
-        script: |
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Deployment failed! ❌',
-          });
+        who-to-greet: 'Mona the Octocat'

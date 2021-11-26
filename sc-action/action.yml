@@ -1,17 +1,13 @@
-name: "Hello Actions"
-description: "Greet someone"
-author: "octocat@github.com"
-
+name: 'Hello World'
+description: 'Greet someone and record the time'
 inputs:
-  MY_NAME:
-    description: "Who to greet"
+  who-to-greet:  # id of input
+    description: 'Who to greet'
     required: true
-    default: "World"
-
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
 runs:
-  using: "docker"
-  image: "Dockerfile"
-
-branding:
-  icon: "mic"
-  color: "purple"
+  using: 'node12'
+  main: 'index.js'
