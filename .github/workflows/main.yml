@@ -10,11 +10,13 @@ jobs:
     steps:
     - name: checkout main
       uses: actions/checkout@v2
-    - name: start server
+    - name: setup node
       uses: actions/setup-node@v2
       with:
         node-version: '16'
-      run: npm run start & npx wait-on http://127.0.0.1:3000/
+    - name: run server
+      run: npm run start & 
+        npx wait-on http://127.0.0.1:3000/
     - name: js action
       uses: ./sc-action
       with:
