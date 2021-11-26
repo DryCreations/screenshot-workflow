@@ -11,9 +11,9 @@ jobs:
     - name: checkout main
       uses: actions/checkout@v2
     - name: start server
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: '16.x'
+        node-version: '16'
       - run: npm run start & npx wait-on 172.17.0.1:3000
     - name: js action
       uses: ./sc-action
