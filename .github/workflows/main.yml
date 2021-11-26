@@ -14,7 +14,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
-      - run: npm run start & npx wait-on 172.17.0.1:3000
+    - run: npm run start & npx wait-on 172.17.0.1:3000
     - name: js action
       uses: ./sc-action
       with:
