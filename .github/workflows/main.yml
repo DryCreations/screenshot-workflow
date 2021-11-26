@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    steps:
     - name: Fail randomly
       run: |
         cat README.md
