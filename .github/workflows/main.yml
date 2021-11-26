@@ -1,12 +1,33 @@
-name: A workflow for my Hello World file
-on: push
+name: Screenshot
+on: issue_comment
+  types: 
+    - created
 
 jobs:
   build:
-    name: Hello world action
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: ./sc-action
-        with:
-          MY_NAME: "Hayden Mankin"
+    - name: Fail randomly
+      run: |
+        cat README.md
+        exit $((RANDOM % 2))        
+    - name: Message success
+      if: ${{ success() }}
+      uses: actions/github-script@v4
+      with:
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Deployment succeeded! ✅',
+          });          
+    - name: Message failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v4
+      with:
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Deployment failed! ❌',
+          });
