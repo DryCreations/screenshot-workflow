@@ -21,12 +21,32 @@ jobs:
     - name: run server
       run: npm run start & 
         npx wait-on http://127.0.0.1:3000/
-    - name: js action
+    - name: sc action
       uses: ./sc-action
       with:
         who-to-greet: 'Mona the Octocat'
-    - name: upload images
-      uses: actions/upload-artifact@v2
+    - name: Upload images to imgur
+      id: imgur_step
+      uses: devicons/public-upload-to-imgur@v2.2.1
       with:
-        name: my-artifact
-        path: example.png
+        path: image-uploads/ # or path/to/images
+        client_id: ${{secrets.IMGUR_CLIENT_ID}}
+    - uses: actions/github-script@v5
+      env:
+        IMG_URLS: ${{ fromJSON(steps.imgur_step.outputs.imgur_urls) }}
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const { IMG_URLS } = process.env
+          console.log(IMG_URLS)
+          console.log(IMG_URLS[0])
+
+          let body = IMG_URLS.map((url) => `![Image](${url})`).join('\n')
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          })
+    
