@@ -5,8 +5,10 @@ on:
       - created
 
 jobs:
-  build:
+  
+  screenshot:
     runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '/screenshot')
     steps:
     - name: checkout main
       uses: actions/checkout@v2
@@ -21,10 +23,25 @@ jobs:
     - name: run server
       run: npm run start & 
         npx wait-on http://127.0.0.1:3000/
-    - name: sc action
-      uses: ./sc-action
+    # - name: sc action
+    #   uses: ./sc-action
+    #   with:
+    #     who-to-greet: 'Mona the Octocat'
+    - name: screenshot images
+      id: sc_step
+      uses: actions/github-script@v5
       with:
-        who-to-greet: 'Mona the Octocat'
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const { webkit } = require('playwright');
+
+          (async () => {
+            const browser = await webkit.launch();
+            const page = await browser.newPage();
+            await page.goto('http://whatsmyuseragent.org/');
+            await page.screenshot({ path: `image-uploads/example.png` });
+            await browser.close();
+          })()
     - name: Upload images to imgur
       id: imgur_step
       uses: devicons/public-upload-to-imgur@v2.2.1
@@ -51,4 +68,3 @@ jobs:
             repo: context.repo.repo,
             body: body
           })
-    
