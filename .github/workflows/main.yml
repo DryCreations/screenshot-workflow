@@ -23,10 +23,6 @@ jobs:
     - name: run server
       run: npm run start & 
         npx wait-on http://127.0.0.1:3000/
-    # - name: sc action
-    #   uses: ./sc-action
-    #   with:
-    #     who-to-greet: 'Mona the Octocat'
     - name: screenshot images
       id: sc_step
       uses: actions/github-script@v5
