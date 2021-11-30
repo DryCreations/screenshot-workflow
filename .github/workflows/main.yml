@@ -29,15 +29,28 @@ jobs:
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
-          const { webkit } = require('playwright');
+          const { webkit, firefox, chromium } = require('playwright');
 
-          (async () => {
-            const browser = await webkit.launch();
-            const page = await browser.newPage();
-            await page.goto('http://whatsmyuseragent.org/');
-            await page.screenshot({ path: `image-uploads/example.png` });
-            await browser.close();
-          })()
+          let browsers = {
+            "webkit": webkit,
+            "firefox": firefox,
+            "chromium", chromium
+          }
+
+          let comment_body = github.context.payload.comment.body;
+
+          let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm)
+          let img_ctr = 0;
+          for (const { groups: { browser, path, selector } } of matches) {
+            (async () => {
+              const b = browsers[browser].launch();
+              const page = await browser.newPage();
+              await page.goto(`http://127.0.0.1:3000${path}`, { waitUntil: 'domcontentloaded' });
+              await element = selector ? page.$(selector) : page;
+              await element.screenshot({ path: `image-uploads/${img_ctr++}.png` });
+              await browser.close();
+            })()
+          }
     - name: Upload images to imgur
       id: imgur_step
       uses: devicons/public-upload-to-imgur@v2.2.1
