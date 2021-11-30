@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const fetch = require('node-fetch');
+const { webkit } = require('playwright');
 
 try {
   // `who-to-greet` input defined in action metadata file
@@ -15,6 +16,14 @@ try {
   fetch('http://127.0.0.1:3000')
   .then(res => res.text())
   .then(text => console.log(text));
+
+  (async () => {
+    const browser = await webkit.launch();
+    const page = await browser.newPage();
+    await page.goto('http://whatsmyuseragent.org/');
+    await page.screenshot({ path: `example.png` });
+    await browser.close();
+  })();  
 
 } catch (error) {
   core.setFailed(error.message);

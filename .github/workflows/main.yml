@@ -21,3 +21,8 @@ jobs:
       uses: ./sc-action
       with:
         who-to-greet: 'Mona the Octocat'
+    - name: upload images
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: example.png
