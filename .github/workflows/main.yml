@@ -34,7 +34,7 @@ jobs:
           let browsers = {
             "webkit": webkit,
             "firefox": firefox,
-            "chromium", chromium
+            "chromium": chromium
           }
 
           let comment_body = github.context.payload.comment.body;
