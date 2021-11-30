@@ -31,13 +31,15 @@ jobs:
       with:
         path: image-uploads/ # or path/to/images
         client_id: ${{secrets.IMGUR_CLIENT_ID}}
-    - uses: actions/github-script@v5
+    - name: comment on issue
+      uses: actions/github-script@v5
       env:
-        IMG_URLS: ${{ fromJSON(steps.imgur_step.outputs.imgur_urls) }}
+        IMG_URLS: ${{ steps.imgur_step.outputs.imgur_urls }}
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           const { IMG_URLS } = process.env
+          IMG_URLS = JSON.parse(IMG_URLS)
           console.log(IMG_URLS)
           console.log(IMG_URLS[0])
 
