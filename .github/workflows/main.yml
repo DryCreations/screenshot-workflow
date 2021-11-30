@@ -39,11 +39,11 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           const { IMG_URLS } = process.env
-          IMG_URLS = JSON.parse(IMG_URLS)
-          console.log(IMG_URLS)
-          console.log(IMG_URLS[0])
+          let img_urls = JSON.parse(IMG_URLS)
+          console.log(img_urls)
+          console.log(img_urls[0])
 
-          let body = IMG_URLS.map((url) => `![Image](${url})`).join('\n')
+          let body = img_urls.map((url) => `![Image](${url})`).join('\n')
 
           github.rest.issues.createComment({
             issue_number: context.issue.number,
