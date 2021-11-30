@@ -14,6 +14,8 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
+    - name: install playwright
+      run: npm install playwright
     - name: run server
       run: npm run start & 
         npx wait-on http://127.0.0.1:3000/
