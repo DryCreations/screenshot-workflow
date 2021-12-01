@@ -85,7 +85,11 @@ jobs:
           console.log(img_urls)
           console.log(img_urls[0])
 
-          let body = img_urls.map((url) => `![Image](${url})`).join('\n')
+          let comment_body = context.payload.comment.body;
+          let matches = comment_body.matchAll(/\/screenshot (?<params>.+? .+?(\s{.+})?)/gm);
+          let params = Array.from(matches, m => m.groups.params);
+
+          let body = img_urls.map((url, idx) => `# ${params[idx]}\n![Image](${url})`).join('\n\n')
 
           github.rest.issues.createComment({
             issue_number: context.issue.number,
