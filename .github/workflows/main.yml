@@ -40,16 +40,15 @@ jobs:
 
           let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)(\s{(?<selector>.+)})?/gm);
           let img_ctr = 0;
-          
+
           for (const { groups: { browser, path, selector } } of matches) {
-            selector = selector || "html";
             console.log(browser, path, selector);
 
             (async () => {
               const b = await browsers[browser].launch();
               const page = await b.newPage();
               await page.goto(`http://127.0.0.1:3000${path}`, { waitUntil: 'domcontentloaded' });
-              const element = page.$(selector);
+              const element = selector ? page.$(selector) : page;
               await element.screenshot({ path: `image-uploads/${img_ctr++}.png` });
               await b.close();
             })()
