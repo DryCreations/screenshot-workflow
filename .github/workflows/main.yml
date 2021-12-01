@@ -37,7 +37,6 @@ jobs:
     - name: install playwright
       run: |
         npm install playwright
-        sudo npx playwright install-deps
     - name: run server
       run: npm run start & 
         npx wait-on http://127.0.0.1:3000/
