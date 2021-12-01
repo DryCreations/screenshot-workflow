@@ -13,11 +13,15 @@ jobs:
     - name: checkout main
       if: ${{ !github.event.issue.pull_request }}
       uses: actions/checkout@v2
+    - name: get comment branch
+      if: ${{ github.event.issue.pull_request }}
+      uses: xt0rted/pull-request-comment-branch@v1
+      id: comment-branch
     - name: checkout branch
       if: ${{ github.event.issue.pull_request }}
       uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.issue.pull_request.head.sha }}
+        ref: ${{ steps.comment-branch.outputs.head_ref }}
     - name: setup node
       uses: actions/setup-node@v2
       with:
