@@ -36,9 +36,6 @@ jobs:
             "firefox": firefox,
             "chromium": chromium
           }
-
-          console.log(JSON.stringify(context));
-
           let comment_body = context.payload.comment.body;
 
           let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm);
@@ -52,8 +49,9 @@ jobs:
               await page.goto(`http://127.0.0.1:3000${path}`, { waitUntil: 'domcontentloaded' });
               const element = page.$(selector);
               await element.screenshot({ path: `image-uploads/${img_ctr++}.png` });
-              await browser.close();
+              await b.close();
             })()
+            console.log(browser, path, selector);
           }
     - name: Upload images to imgur
       id: imgur_step
