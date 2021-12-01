@@ -38,11 +38,9 @@ jobs:
           }
           let comment_body = context.payload.comment.body;
 
-          let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm);
+          let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)(\s{(?<selector>.+)})?/gm);
           let img_ctr = 0;
-
-          console.log(JSON.stringify(comment_body.match(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm)));
-
+          
           for (const { groups: { browser, path, selector } } of matches) {
             selector = selector || "html";
             console.log(browser, path, selector);
