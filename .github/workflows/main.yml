@@ -5,42 +5,38 @@ on:
       - created
 
 jobs:
-  
   screenshot:
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/playwright:focal
     if: contains(github.event.comment.body, '/screenshot')
     steps:
-    - name: checkout main
+    - name: Checkout Main
       if: ${{ !github.event.issue.pull_request }}
       uses: actions/checkout@v2
-    - name: get comment branch
+    - name: Get Branch for Pull Request
       if: ${{ github.event.issue.pull_request }}
       uses: xt0rted/pull-request-comment-branch@v1
       id: comment-branch
-    - name: checkout branch
+    - name: Checkout Branch
       if: ${{ github.event.issue.pull_request }}
       uses: actions/checkout@v2
       with:
         ref: ${{ steps.comment-branch.outputs.head_ref }}
-    - name: setup node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - name: Cache NPM dependencies
+    - name: Cache NPM Dependencies
       uses: actions/cache@v2
       with:
         path: ~/.npm
         key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.OS }}-npm-cache-
-    - name: install playwright
+    - name: Install Playwright
       run: |
         npm install playwright
-    - name: run server
-      run: npm run start & 
+    - name: Run Server
+      run: |
+        npm run start & 
         npx wait-on http://127.0.0.1:3000/
-    - name: screenshot images
+    - name: Screenshot Images
       id: sc_step
       uses: actions/github-script@v5
       with:
@@ -70,13 +66,13 @@ jobs:
               await b.close();
             })()
           }
-    - name: Upload images to imgur
+    - name: Upload to Imgur
       id: imgur_step
       uses: devicons/public-upload-to-imgur@v2.2.1
       with:
         path: image-uploads/ # or path/to/images
         client_id: ${{secrets.IMGUR_CLIENT_ID}}
-    - name: comment on issue
+    - name: Comment Images
       uses: actions/github-script@v5
       env:
         IMG_URLS: ${{ steps.imgur_step.outputs.imgur_urls }}
