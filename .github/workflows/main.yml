@@ -11,7 +11,13 @@ jobs:
     if: contains(github.event.comment.body, '/screenshot')
     steps:
     - name: checkout main
+      if: !github.event.issue.pull_request
       uses: actions/checkout@v2
+    - name: checkout branch
+      if: github.event.issue.pull_request
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.issue.pull_request.head.sha }}
     - name: setup node
       uses: actions/setup-node@v2
       with:
