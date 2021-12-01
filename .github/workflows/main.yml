@@ -37,7 +37,9 @@ jobs:
             "chromium": chromium
           }
 
-          let comment_body = github.context.payload.comment.body;
+          console.log(JSON.stringify(context));
+
+          let comment_body = context.payload.comment.body;
 
           let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm);
           let img_ctr = 0;
