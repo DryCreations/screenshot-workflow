@@ -41,8 +41,12 @@ jobs:
           let matches = comment_body.matchAll(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm);
           let img_ctr = 0;
 
+          console.log(JSON.stringify(comment_body.match(/\/screenshot (?<browser>.+?) (?<path>.+?)\b( {(?<selector>.+)})?/gm)));
+
           for (const { groups: { browser, path, selector } } of matches) {
             selector = selector || "html";
+            console.log(browser, path, selector);
+
             (async () => {
               const b = await browsers[browser].launch();
               const page = await b.newPage();
@@ -51,7 +55,6 @@ jobs:
               await element.screenshot({ path: `image-uploads/${img_ctr++}.png` });
               await b.close();
             })()
-            console.log(browser, path, selector);
           }
     - name: Upload images to imgur
       id: imgur_step
