@@ -148,3 +148,5 @@ npm run start
 And expects a server to start at `http://127.0.0.1:3000/`
 
 If your project acts differently, or has another run command, update the command on line 37 as needed.
+
+You will also need to add a secret to your repository called `IMGUR_CLIENT_ID`, containing your client id for your imgur app. It is pretty easy to register for their API.
