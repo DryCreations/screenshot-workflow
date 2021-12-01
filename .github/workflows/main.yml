@@ -69,6 +69,10 @@ jobs:
       with:
         path: image-uploads/ # or path/to/images
         client_id: ${{secrets.IMGUR_CLIENT_ID}}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: upload
+        path: image-uploads/
     - name: comment on issue
       uses: actions/github-script@v5
       env:
