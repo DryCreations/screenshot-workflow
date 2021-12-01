@@ -8,6 +8,7 @@ jobs:
   
   screenshot:
     runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:focal
     if: contains(github.event.comment.body, '/screenshot')
     steps:
     - name: checkout main
