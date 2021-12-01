@@ -48,7 +48,7 @@ jobs:
               const b = await browsers[browser].launch();
               const page = await b.newPage();
               await page.goto(`http://127.0.0.1:3000${path}`, { waitUntil: 'domcontentloaded' });
-              const element = selector ? page.$(selector) : page;
+              const element = selector ? await page.$(selector) : page;
               await element.screenshot({ path: `image-uploads/${img_ctr++}.png` });
               await b.close();
             })()
