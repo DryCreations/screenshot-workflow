@@ -13,7 +13,9 @@ To activate this workflow all you need to do is leave a comment in this format:
 Your comment can contain as many of these commands as you want, the workflow will post all of the screenshots in the same comment.
 
 `browser`: Represents the browser being run by playwright, try using `webkit` or `chromium`.
+
 `path`: Represents the path being screenshotted by playwright, this demo project only has a root path `/`.
+
 `selector`: An optional flag representing a query selector of an element to screenshot instead of a whole page.
 
 These options allow contributors and maintainers to screenshot various new features, or compare issues across browser easily by using quick comments in github. Imagine you notice an unexpected behavior in one browser, and don't have easy access to another. Open a new issue explaining what is wrong in your browser, and use this bot to post screenshots across various browsers to see if the issue exists everywhere. It also has the added benefit of showing everyone exactly what you are talking about visually!
